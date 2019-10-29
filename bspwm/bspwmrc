@@ -1,0 +1,20 @@
+#! /bin/sh
+
+bspc monitor -d I II III IV V VI
+
+bspc config border_width 	2
+bspc config normal_border_color '#2A2525'
+bspc config active_border_color '#494343'
+bspc config focused_border_color '#494343'
+
+bspc config split_ratio         0.50
+bspc config borderless_monocle  true
+bspc config gapless_monocle     true
+bspc config focus_follows_pointer true
+bspc config pointer_follows_monitor true
+
+bspc rule -a firefox desktop='II'
+bspc rule -a Code desktop='code'
+bspc rule -a 'Zathura' desktop='music' follow=on state=tiled
+
+bspc wm --adopt-orphans

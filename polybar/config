@@ -1,0 +1,334 @@
+;
+;'########:'##::::'##:'####::'######::'########:'########:'##::: ##::'######::'########:
+; ##.....::. ##::'##::. ##::'##... ##:... ##..:: ##.....:: ###:: ##:'##... ##: ##.....::
+; ##::::::::. ##'##:::: ##:: ##:::..::::: ##:::: ##::::::: ####: ##: ##:::..:: ##:::::::
+; ######:::::. ###::::: ##::. ######::::: ##:::: ######::: ## ## ##: ##::::::: ######:::
+; ##...:::::: ## ##:::: ##:::..... ##:::: ##:::: ##...:::: ##. ####: ##::::::: ##...::::
+; ##:::::::: ##:. ##::: ##::'##::: ##:::: ##:::: ##::::::: ##:. ###: ##::: ##: ##:::::::
+; ########: ##:::. ##:'####:. ######::::: ##:::: ########: ##::. ##:. ######:: ########:
+;........::..:::::..::....:::......::::::..:::::........::..::::..:::......:::........::
+;
+; Polybar theme by aravk33
+
+
+[colors]
+background = #aa222
+background-alt = #222
+foreground = #aaccffffff
+foreground-alt = #555555
+primary-1 = #ccffffff
+primary-2 = #ccffffff
+primary-3 = #ccffffff
+primary-4 = #ccffffff
+primary-5 = #ccffffff
+primary-6 = #ccffffff
+alert = #d47578
+
+[bar/existence]
+;monitor = eDP-1
+
+enable-ipc = true
+
+;position of the bar
+/* bottom = true */
+
+; Prefer fixed center position for the `modules-center` block
+; When false, the center position will be based on the size of the other blocks.
+fixed-center = true
+
+; Dimension defined as pixel value (e.g. 35) or percentage (e.g. 50%),
+; the percentage can optionally be extended with a pixel offset like so:
+; 50%:-10, this will result in a width or height of 50% minus 10 pixels
+width = 100%
+height = 25
+
+; Background ARGB color (e.g. #f00, #ff992a, #ddff1023)
+background = #00222
+
+; Foreground ARGB color (e.g. #f00, #ff992a, #ddff1023)
+foreground = ${colors.primary-6}
+
+line-size = 1
+
+; Number of spaces to add at the beginning/end of the bar
+padding = 2
+
+; Fonts are defined using <font-name>;<vertical-offset>
+; Font names are specified using a fontconfig pattern.
+;   font-0 = NotoSans-Regular:size=8;2
+;   font-1 = MaterialIcons:size=10
+;   font-2 = Termsynu:size=8;-1
+;   font-3 = FontAwesome:size=10
+; See the Fonts wiki page for more details
+font-0 = Lato:size=10;2
+font-1 = Iosevka:hinting=true:pixelsize=12:style=medium;2
+/* font-1 = "Font Awesome 5 Free:style=Solid:pixelsize=10;2" */
+font-2 = "Font Awesome 5 Free:style=Solid:pixelsize=12;2"
+font-3 = "Font Awesome 5 Brands:style=Solid:pixelsize=10;2"
+font-4 = "MaterialIcons:size=11;3" 
+;font-4 = "siji:pixelsize=10;1"
+
+; Modules are added to one of the available blocks
+;   modules-left = cpu ram
+;   modules-center = xwindow xbacklight
+;   modules-right = ipc clock
+modules-left = bspwm
+modules-center = date
+modules-right = pulseaudio xbacklight battery network
+
+[bar/systray]
+# As small as possible, polybar will resize it when items get added
+width = 1
+
+# Whatever fits your needs
+height = 40
+
+# Bottom left to imitate gnome-shells systray
+bottom = true
+
+# REQUIRED for us to be able to move the window
+override-redirect = true
+
+modules-right = placeholder
+
+tray-position = left
+tray-maxsize = 16
+tray-padding = 8
+tray-transparent = false
+tray-background = #282C34
+
+[module/bspwm]
+type = internal/bspwm
+
+ws-icon-0 = I;
+ws-icon-1 = II;
+ws-icon-2= III;
+ws-icon-3 = IV;
+ws-icon-4 = V; 
+ws-icon-default = 
+
+label-mode-padding = 2
+label-mode-foreground = #000000
+label-mode-background = ${colors.primary-5}
+
+; focused = Active workspace on focused monitor
+label-focused = %icon%
+label-focused-background = ${colors.background-alt}
+label-focused-underline = ${colors.primary-5}
+label-focused-padding = 2
+
+label-separator = |
+label-separator-padding = 1
+label-separator-foreground = #ffb52a
+
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %icon%
+label-unfocused-padding = 2
+
+; visible = Active workspace on unfocused monitor
+label-visible = %icon%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+label-urgent = %icon%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+; Only show workspaces defined on the same output as the bar
+;
+; Useful if you want to show monitor specific workspaces
+; on different bars
+;
+; Default: false
+pin-workspaces = true
+
+; This will split the workspace name on ':'
+; Default: false
+strip-wsnumbers = true
+
+; Sort the workspaces by index instead of the default
+; sorting that groups the workspaces by output
+; Default: false
+index-sort = true
+
+; Create scroll handlers used to cycle workspaces
+; Default: true
+enable-scroll = false
+
+; Set the scroll cycle direction 
+; Default: true
+reverse-scroll = false
+
+[module/date]
+type = internal/date
+
+; Seconds to sleep between updates
+interval = 1.0
+
+; See "http://en.cppreference.com/w/cpp/io/manip/put_time" for details on how to format the date string
+; NOTE: if you want to use syntax tags here you need to use %%{...}
+date = %A, %d %B %Y
+
+; Optional time format
+time = %l:%M %p
+
+label = %date% %time%
+
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+; Sink to be used, if it exists (find using `pacmd list-sinks`, name field)
+; If not, uses default sink
+sink = alsa_output.pci-0000_00_1f.3.analog-stereo
+
+; Use PA_VOLUME_UI_MAX (~153%) if true, or PA_VOLUME_NORM (100%) if false
+; Default: true
+use-ui-max = true
+
+; Interval for volume increase/decrease (in percent points)
+; Default: 5
+interval = 5
+
+format-volume = <ramp-volume> <label-volume>
+
+format-muted = <label-muted>
+
+format-volume-underline = ${colors.primary-4}
+format-volume-foreground = #FFFFFF
+format-volume-padding = 2
+format-muted-underline = ${colors.primary-4}
+format-muted-foreground = #FFFFFF
+format-muted-padding = 2
+
+label-volume = %percentage%%
+
+label-muted = %{T3}
+
+; Only applies if <ramp-volume> is used
+ramp-volume-0 = %{T3}
+ramp-volume-1 = %{T3}
+ramp-volume-2 = %{T3}
+
+[module/xbacklight]
+type = internal/xbacklight
+card = intel_xbacklight
+
+format = <ramp> <label>
+format-underline = ${colors.primary-3}
+format-foreground = #FFFFFF
+format-padding = 2
+
+label = %percentage%%
+
+scroll-up = light -A 5
+scroll-down = light -U 5
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+
+[module/network]
+type = internal/network
+interface = wlp1s0
+interval = 3.0
+
+format-connected = <label-connected>
+format-connected-underline = ${colors.primary-2}
+format-connected-foreground = #FFFFFF
+format-connected-padding = 1
+label-connected = %downspeed:9%  %essid%
+
+format-disconnected = <label-disconnected>
+format-disconnected-underline = ${colors.primary-2}
+format-disconnected-foreground = #FFFFFF
+format-disconnected-padding = 1
+label-disconnected = 
+
+ramp-signal-foreground = ${colors.foreground-alt}
+/* ramp-signal-1 = 😠
+ramp-signal-2 = 😒
+ramp-signal-3 = 😊
+ramp-signal-4 = 😃
+ramp-signal-5 = 😈 */
+
+[module/battery]
+type = internal/battery
+
+battery = BAT0
+adapter = ADP1
+
+; If an inotify event haven't been reported in this many
+; seconds, manually poll for new values.
+;
+; Needed as a fallback for systems that don't report events
+; on sysfs/procfs.
+;
+; Disable polling by setting the interval to 0.
+;
+; Default: 5
+poll-interval = 5
+
+; see "man date" for details on how to format the time string
+; NOTE: if you want to use syntax tags here you need to use %%{...}
+; Default: %H:%M:%S
+time-format = %H:%M
+
+format-charging = <animation-charging> <label-charging>
+format-charging-underline = ${colors.primary-1}
+format-charging-foreground = #6cee76
+format-charging-padding = 2
+
+format-discharging = <ramp-capacity> <label-discharging>
+format-discharging-underline = ${colors.primary-1}
+format-discharging-foreground = #FFFFFF
+format-discharging-padding = 2
+
+format-full = <ramp-capacity> <label-full>
+format-full-underline = ${colors.primary-1}
+format-full-foreground = #6cee76
+format-full-padding = 2
+
+; Available tokens:
+;   %percentage% (default)
+;   %time%
+;   %consumption% (shows current charge rate in watts)
+label-charging = %percentage%%
+
+; Available tokens:
+;   %percentage% (default)
+;   %time%
+;   %consumption% (shows current discharge rate in watts)
+label-discharging = %percentage%%
+
+; Available tokens:
+;   %percentage% (default)
+label-full = %percentage%%
+
+; Only applies if <ramp-capacity> is used
+ramp-capacity-0-foreground = ${colors.alert}
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+ramp-capacity-5 = 
+ramp-capacity-6 = 
+ramp-capacity-7 = 
+ramp-capacity-8 = 
+ramp-capacity-9 = 
+
+; Only applies if <bar-capacity> is used
+bar-capacity-width = 10
+
+; Only applies if <animation-charging> is used
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+; Framerate in milliseconds
+animation-charging-framerate = 500

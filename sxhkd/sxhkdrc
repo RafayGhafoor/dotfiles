@@ -1,0 +1,109 @@
+# Launch terminal
+super + Return
+    kitty
+
+## Volume manager
+super + control + Next
+    pactl -- set-sink-volume 0 +5%
+super + control + Prior
+    pactl -- set-sink-volume 0 -5%
+
+# Program launcher
+super + d
+    rofi -show drun -display-run ":" -show-icons
+
+# Closes focused window
+super + q
+    bspc node -c
+
+# Toggle fullscreen active window
+super + f
+    bspc node focused -t '~fullscreen'
+
+# Focus next window in current desktop
+super + Tab
+    bspc node -f next.local
+
+# Switch to recent window
+alt + Tab 
+    bspc node -f last.local
+
+# Swap desktop
+alt + r
+    bspc node -s next.local
+
+# Rotate
+alt + shift + r
+    bspc node @/ -R 90
+
+# Expand a window by moving one of its side outward
+super + shift + {Left,Down,Up,Right}
+    bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# Contract a window by moving one of its side inward
+super + {Left,Down,Up,Right}
+    bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# Move window to workspace
+super + {_,shift + }{1-9,0}
+    bspc {desktop -f,node -d} '^{1-9,10}'
+
+# Move all windows to workspace
+alt + {shift + }{1-9,0}
+    bspc node -f @/; bspc node -d '^{1-9,10}'
+
+# Set the window state
+super + space
+    bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# Preselect the splitting area for next window on leaf/parent
+super + ctrl + {h,j,k,l}
+    bspc node --presel-dir \~{west,south,north,east}
+
+## Make sxhkd reload its configuration files
+super + shift + r
+    pkill -USR1 -x sxhkd
+
+## Quit bspwm normally
+super + control + Escape
+    pkill sh sleep dsbmc-cli clipit && bspc quit 2>/dev/null
+
+# Shutdown system
+alt + control + p
+    shutdown -h now
+
+# Suspend
+alt + control +s
+    zzz
+
+# Reboot
+alt + control + r
+    shutdown -r now
+
+# Quit
+super + ctrl + q
+    bspc quit
+
+# Run Telegram
+super + t
+    telegram-desktop
+
+# Run File Manager
+super + e
+    thunar ~/Downloads
+
+# Run code
+super + c
+    code
+
+# lockscreen
+super + shift + l
+    betterlockscreen -l dim
+
+# fast-login
+super + l
+    python3 ~/Downloads/scripts/ruckus.py
+
+# Screenshot
+super + p
+    scrot
