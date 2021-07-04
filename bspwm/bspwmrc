@@ -1,11 +1,34 @@
-#! /bin/sh
+#!/bin/bash
 
-bspc monitor -d I II III IV V VI
+## Environtment
+export PATH="${PATH}:$HOME/.config/bspwm/bin"
 
-bspc config border_width 	2
-bspc config normal_border_color '#2A2525'
-bspc config active_border_color '#494343'
-bspc config focused_border_color '#494343'
+## Get colors from .Xresources -------------------------------#
+xrdb ~/.Xresources
+getcolors () {
+	FOREGROUND=$(xrdb -query | grep 'foreground:'| awk '{print $NF}')
+	BACKGROUND=$(xrdb -query | grep 'background:'| awk '{print $NF}')
+	BLACK=$(xrdb -query | grep 'color0:'| awk '{print $NF}')
+	RED=$(xrdb -query | grep 'color1:'| awk '{print $NF}')
+	GREEN=$(xrdb -query | grep 'color2:'| awk '{print $NF}')
+	YELLOW=$(xrdb -query | grep 'color3:'| awk '{print $NF}')
+	BLUE=$(xrdb -query | grep 'color4:'| awk '{print $NF}')
+	MAGENTA=$(xrdb -query | grep 'color5:'| awk '{print $NF}')
+	CYAN=$(xrdb -query | grep 'color6:'| awk '{print $NF}')
+	WHITE=$(xrdb -query | grep 'color7:'| awk '{print $NF}')
+}
+getcolors
+
+## Configurations -------------------------------#
+bspc monitor -d 'I' 'II' 'III' 'IV' 'V' 'VI' 'VII' 'VIII'
+
+bspc config border_width 1
+bspc config split_ratio 0.50
+
+bspc config focused_border_color "$BLUE" 
+bspc config normal_border_color "$BACKGROUND"
+bspc config active_border_color "$MAGENTA"
+bspc config presel_feedback_color "$GREEN"
 
 bspc config split_ratio         0.50
 bspc config borderless_monocle  true
@@ -13,8 +36,51 @@ bspc config gapless_monocle     true
 bspc config focus_follows_pointer true
 bspc config pointer_follows_monitor true
 
-bspc rule -a firefox desktop='II'
-bspc rule -a Code desktop='code'
-bspc rule -a 'Zathura' desktop='music' follow=on state=tiled
+bspc rule -a telegram-desktop split_ratio=0.30 desktop='^1'
+## Autostart -------------------------------#
 
-bspc wm --adopt-orphans
+# Kill if already running
+
+
+# Lauch notification daemon
+dunst \
+-geom "280x50-10+40" -frame_width "1" -font "Iosevka Custom 11" \
+-lb "$BACKGROUND" -lf "$FOREGROUND" -lfr "$BLUE" \
+-nb "$BACKGROUND" -nf "$FOREGROUND" -nfr "$BLUE" \
+-cb "$BACKGROUND" -cf "$RED" -cfr "$RED" &
+
+# Lauch keybindings daemon
+sxhkd &
+
+xinput --set-prop 10 'libinput Accel Speed' 0.8 &
+xinput --set-prop 11 'libinput Accel Speed' 0.8 &
+
+telegram-desktop -startintray &
+upwork &
+slack -u &
+mailspring -b &
+
+# Enable Super Keys For Menu
+ksuperkey -e 'Super_L=Alt_L|F1' &
+ksuperkey -e 'Super_R=Alt_L|F1' &
+
+# Enable power management
+xfce4-power-manager &
+
+# Fix cursor
+xsetroot -cursor_name left_ptr
+
+# Restore wallpaper
+
+# hideIt.sh --name '^bspwm$' -p 3 -d top -H -w &
+
+# Start bspwm scripts
+bspcolors &
+# bspcomp &
+bspbar &
+
+feh --bg-scale ~/Downloads/abstract-colors-unreal-clouds-2K-wallpaper.jpg
+# Issue Tracker (Don't Remove IT)
+issue_tracker.sh
+
+
